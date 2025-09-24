@@ -3,19 +3,26 @@
 <head>
     <meta charset="utf-8">
     <title>우리 사이, 이만큼 가까워!</title>
-    <link rel="stylesheet" href="junhyun.css">  </head>
+    <link rel="stylesheet" href="junhyun.css">
+</head>
 <body>
-    
-<h1>💖 우리 사이, 이만큼 가까워! 💖</h1>
-    
-<p id="info-text">버튼을 눌러 게임을 시작하세요!</p>
+    <h1>💖 우리 사이, 이만큼 가까워! 💖</h1>
 
-<button id="create-btn">게임방 만들기</button>
+    <div id="lobby-screen">
+        <p id="info-text">버튼을 눌러 게임을 시작하세요!</p>
+        <button id="create-btn">게임방 만들기</button>
+        <hr>
+        <input type="text" id="code-input" placeholder="초대 코드를 입력하세요">
+        <button id="join-btn">참여하기</button>
+    </div>
 
-<hr> <input type="text" id="code-input" placeholder="초대 코드를 입력하세요">
-<button id="join-btn">참여하기</button>
+    <div id="game-screen">
+        <p id="question-p">여기에 질문이 표시됩니다.</p>
+        <button id="choice1-btn">선택지 1</button>
+        <button id="choice2-btn">선택지 2</button>
+        <p id="result-p"></p>
+    </div>
 
-<script src="junhyun.js"></script>
-    
+    <script src="junhyun.js"></script> 
 </body>
 </html>

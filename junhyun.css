@@ -23,3 +23,14 @@ button {
     margin: 10px; /* 버튼들 사이에 간격을 줘요 */
     cursor: pointer; /* 마우스를 올리면 손가락 모양으로 바뀌어요 */
 }
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+input {
+    padding: 15px;
+    font-size: 18px;
+    border: 1px solid #cccccc;
+}
