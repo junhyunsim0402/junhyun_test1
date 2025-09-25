@@ -3,10 +3,13 @@
 document.addEventListener("DOMContentLoaded", () => {
     // 1. HTML 요소들에게 별명 붙여주기
     const lobbyScreen = document.querySelector("#lobby-screen");
-    const infoText = document.querySelector("#info-text");
+    const messageText = document.querySelector("#message-text"); // Renamed from infoText
     const createBtn = document.querySelector("#create-btn");
     const joinBtn = document.querySelector("#join-btn");
     const codeInput = document.querySelector("#code-input");
+    const copyBtn = document.querySelector("#copy-btn");
+    const inviteCodeSection = document.querySelector("#invite-code-section");
+    const displayInviteCode = document.querySelector("#display-invite-code");
 
     const gameScreen = document.querySelector("#game-screen");
     const questionP = document.querySelector("#question-p");
@@ -20,7 +23,12 @@ document.addEventListener("DOMContentLoaded", () => {
     createBtn.addEventListener("click", () => {
         fetch("http://localhost:8080/api/game/create")
             .then(response => response.text())
-            .then(inviteCode => { infoText.textContent = "초대 코드: " + inviteCode; });
+            .then(inviteCode => {
+                displayInviteCode.textContent = inviteCode;
+                inviteCodeSection.style.display = "block"; // Show invite code section
+                messageText.textContent = ""; // Clear general message
+                copyBtn.dataset.inviteCode = inviteCode; // Store invite code for copying
+            });
     });
 
     // 3. '참여하기' 버튼 기능
@@ -34,8 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (message.includes("성공")) {
                     connectWebSocket();
                 } else {
-                    infoText.textContent = message;
-                    infoText.style.color = "red";
+                    messageText.textContent = message; // Use messageText for error messages
+                    messageText.style.color = "red";
                 }
             });
     });
@@ -46,7 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         socket.onopen = function() {
             socket.send(JSON.stringify({ type: "JOIN", code: codeInput.value }));
-            infoText.textContent = "상대방을 기다리는 중입니다...";
+            messageText.textContent = "상대방을 기다리는 중입니다..."; // Update message text
+            // inviteCodeSection.style.display = "none"; // Do NOT hide invite code section
         };
 
         socket.onmessage = function(event) {
@@ -100,4 +109,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }));
         resultP.textContent = "당신은 " + choiceNumber + "번을 선택했습니다. 상대방의 선택을 기다리는 중...";
     }
+
+    // 6. 복사하기 버튼 기능
+    copyBtn.addEventListener("click", () => {
+        const inviteCode = copyBtn.dataset.inviteCode;
+        if (inviteCode) {
+            navigator.clipboard.writeText(inviteCode).then(() => {
+                alert("초대 코드가 클립보드에 복사되었습니다!");
+            }).catch(err => {
+                console.error("클립보드 복사 실패: ", err);
+            });
+        }
+    });
 });
